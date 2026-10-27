@@ -58,6 +58,64 @@ def load_vix(old):
         print(f"VIX fetch failed: {e}", file=sys.stderr)
     return old.get("vix", []) if old else []
 
+INDICES_US = [("^GSPC", "标普500"), ("^IXIC", "纳斯达克综合"), ("^NDX", "纳斯达克100"),
+              ("^DJI", "道琼斯工业"), ("^RUT", "罗素2000")]
+# A股指数走腾讯日K（yfinance 对创业板/沪深300/中证500/科创50 只有最新一行）
+INDICES_CN = [("sh000001", "上证指数"), ("sz399001", "深证成指"), ("sz399006", "创业板指"),
+              ("sh000300", "沪深300"), ("sh000905", "中证500"), ("sh000688", "科创50")]
+
+def _mk_entry(sym, name, closes):
+    last_d, last_c = closes[-1]
+    prev_c = closes[-2][1]
+    def pct(n):
+        base = closes[-n-1][1] if len(closes) > n else closes[0][1]
+        return round((last_c / base - 1) * 100, 2)
+    return {"sym": sym, "name": name, "date": last_d, "close": round(last_c, 2),
+            "chg": round((last_c / prev_c - 1) * 100, 2), "m1": pct(21), "m3": pct(63),
+            "spark": [{"d": d, "c": round(c, 2)} for d, c in closes]}
+
+def load_indices(old):
+    old_map = {}
+    if old:
+        for grp in ("us", "cn"):
+            for e in old.get("indices", {}).get(grp, []):
+                old_map[e["sym"]] = e
+    out = {"us": [], "cn": []}
+    try:
+        import yfinance as yf
+        for sym, name in INDICES_US:
+            try:
+                h = yf.Ticker(sym).history(period="6mo")
+                closes = [(str(d.date()), float(c)) for d, c in zip(h.index, h["Close"]) if c == c]
+                if len(closes) < 2: raise ValueError("too few rows")
+                out["us"].append(_mk_entry(sym, name, closes))
+            except Exception as e:
+                print(f"index {sym} failed: {e}", file=sys.stderr)
+                if sym in old_map: out["us"].append(old_map[sym])
+    except Exception as e:
+        print(f"yfinance unavailable: {e}", file=sys.stderr)
+        out["us"] = [old_map[s] for s, _ in INDICES_US if s in old_map]
+    try:
+        import requests
+        from datetime import date, timedelta
+        end = date.today(); beg = end - timedelta(days=200)
+        for code, name in INDICES_CN:
+            try:
+                url = f"https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param={code},day,{beg},{end},200,qfq"
+                j = requests.get(url, timeout=15, headers={"User-Agent": "Mozilla/5.0"}).json()
+                d = j["data"][code]
+                ks = d.get("qfqday") or d.get("day") or []
+                closes = [(k[0], float(k[2])) for k in ks]
+                if len(closes) < 2: raise ValueError("too few rows")
+                out["cn"].append(_mk_entry(code, name, closes))
+            except Exception as e:
+                print(f"index {code} failed: {e}", file=sys.stderr)
+                if code in old_map: out["cn"].append(old_map[code])
+    except Exception as e:
+        print(f"tencent unavailable: {e}", file=sys.stderr)
+        out["cn"] = [old_map[c] for c, _ in INDICES_CN if c in old_map]
+    return out
+
 def main():
     old = {}
     if os.path.exists(OUT):
@@ -70,6 +128,7 @@ def main():
         "vix": vix,
         "iv30": load_iv30(),
         "reports": load_reports(),
+        "indices": load_indices(old),
     }
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False)
