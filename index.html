@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Options Lab · 期权实验室 — 084S</title>
-<link rel="stylesheet" href="style-v4.css">
+<link rel="stylesheet" href="style-v5.css">
 </head>
 <body>
 <header class="topbar">
@@ -18,6 +18,7 @@
   <button class="tab active" data-tab="daily">📊 美股期权日报</button>
   <button class="tab" data-tab="payoff">📈 Payoff Diagram</button>
   <button class="tab" data-tab="bs">🧮 BS 计算器</button>
+  <button class="tab" data-tab="index">🌐 指数</button>
 </nav>
 <main>
   <!-- 日报 -->
@@ -112,8 +113,17 @@
       </div>
     </div>
   </section>
+
+  <!-- 指数 -->
+  <section id="tab-index" class="panel">
+    <h3 class="sec-title">美股指数 <span class="muted">收盘 · 每日更新</span></h3>
+    <div class="idx-grid" id="idxUS"></div>
+    <h3 class="sec-title">A股指数 <span class="muted">收盘 · 每日更新</span></h3>
+    <div class="idx-grid" id="idxCN"></div>
+    <p class="hint">涨跌按 A 股习惯：红涨绿跌。美股指数为最近一个美股交易日收盘，A股指数为最近一个 A 股交易日收盘；走势为近 6 个月日线。</p>
+  </section>
 </main>
 <footer>Options Lab · 数据：美股期权日报（SPY/QQQ/IWM/DIA 期权链 IV30）+ CBOE VIX · 每日北京时间 21:00 更新 · 仅供研究，不构成投资建议</footer>
-<script src="app-v8.js"></script>
+<script src="app-v9.js"></script>
 </body>
 </html>

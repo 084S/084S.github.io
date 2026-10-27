@@ -1,0 +1,53 @@
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;background:#f6f7f9;color:#1a2332}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:14px 22px;background:#0f172a;color:#fff}
+.brand{font-size:20px;font-weight:700}.brand .logo{color:#38bdf8}.brand .sub{font-size:13px;font-weight:400;color:#94a3b8;margin-left:6px}
+.vix-badge{background:#1e293b;border:1px solid #334155;padding:6px 12px;border-radius:999px;font-weight:700}
+.muted{color:#94a3b8;font-size:12px;margin-left:10px}
+.tabs{display:flex;gap:8px;padding:12px 22px 0}
+.tab{border:1px solid #e2e8f0;background:#fff;padding:10px 18px;border-radius:10px 10px 0 0;cursor:pointer;font-size:15px}
+.tab.active{background:#0f172a;color:#fff;border-color:#0f172a}
+main{padding:16px 22px;max-width:1280px;margin:0 auto}
+.panel{display:none}.panel.active{display:block}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:18px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.grid-daily{display:grid;grid-template-columns:340px 1fr;gap:16px}
+.grid-2{display:grid;grid-template-columns:420px 1fr;gap:16px}
+@media(max-width:900px){.grid-daily,.grid-2{grid-template-columns:1fr}}
+.vix-big{font-size:44px;font-weight:800;line-height:1}
+.vix-level{font-weight:700;margin:6px 0 10px}
+.gauge{position:relative;height:10px;background:linear-gradient(90deg,#22c55e,#eab308 40%,#f97316 65%,#ef4444);border-radius:99px;margin:14px 0 22px}
+.gauge-fill{position:absolute;top:-5px;width:4px;height:20px;background:#0f172a;border-radius:2px;transition:left .3s}
+.gauge span{position:absolute;top:12px;font-size:11px;color:#64748b;transform:translateX(-50%)}
+.g1{left:30%}.g2{left:40%}.g3{left:60%}.g4{left:80%}
+.hint{color:#64748b;font-size:12px;line-height:1.6}
+.field{margin:12px 0}.field label{display:block;font-size:13px;color:#475569;margin-bottom:6px;font-weight:600}
+.field input[type=range]{width:58%;vertical-align:middle}
+.field input[type=number],.field select{padding:7px 9px;border:1px solid #cbd5e1;border-radius:8px;margin-left:6px;width:110px}
+.field select{margin-left:0;width:100%}
+.btn{background:#0f172a;color:#fff;border:0;padding:9px 14px;border-radius:9px;cursor:pointer}.btn.small{padding:7px 10px;margin-left:8px}
+.presets{margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.presets button{border:1px solid #cbd5e1;background:#fff;border-radius:999px;padding:6px 12px;cursor:pointer}
+.presets button:hover{background:#e0f2fe}
+.leg{border:1px solid #e5e7eb;border-radius:10px;padding:10px;margin-bottom:10px;background:#f8fafc}
+.leg-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.leg select,.leg input{padding:6px;border:1px solid #cbd5e1;border-radius:7px}
+.leg input[type=number]{width:82px}.leg input[type=range]{width:120px}
+.leg .del{margin-left:auto;background:#fee2e2;border:0;border-radius:7px;padding:6px 9px;cursor:pointer}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.stat{background:#f1f5f9;border-radius:10px;padding:10px}.stat b{display:block;font-size:17px}
+.pos{color:#16a34a}.neg{color:#dc2626}
+.hover-box{background:#0f172a;color:#e2e8f0;border-radius:9px;padding:10px;font-size:13px;min-height:20px}
+.report{line-height:1.75;font-size:15px}.report h1{font-size:21px}.report h2{font-size:17px;border-left:4px solid #38bdf8;padding-left:8px;margin-top:22px}
+.price-big{font-size:38px;font-weight:800}
+table.greeks{width:100%;border-collapse:collapse;margin:12px 0}table.greeks td{border-bottom:1px solid #eef2f7;padding:8px 4px}table.greeks td:first-child{color:#64748b}
+canvas{width:100%}
+footer{text-align:center;color:#94a3b8;font-size:12px;padding:22px}
+
+.idx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:22px}
+.idx-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:14px 16px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.idx-head{display:flex;justify-content:space-between;align-items:baseline}
+.idx-name{font-weight:700;font-size:16px}
+.idx-date{color:#94a3b8;font-size:12px}
+.idx-price{font-size:28px;font-weight:800;margin:2px 0}
+.idx-sub{font-size:13px;color:#64748b;display:flex;gap:14px;margin-bottom:6px}
+.up{color:#dc2626;font-weight:700}.down{color:#16a34a;font-weight:700}
+.sec-title{font-size:18px;margin:6px 0 12px}
