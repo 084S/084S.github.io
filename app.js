@@ -14,7 +14,7 @@ function bs(S,K,T,r,q,sig,type){ if(T<=0||sig<=0){const intr=type==='call'?Math.
 function impliedVol(S,K,T,r,q,mkt,type){let lo=0.001,hi=3;if(bs(S,K,T,r,q,hi,type).price<mkt||bs(S,K,T,r,q,lo,type).price>mkt)return null;for(let i=0;i<100;i++){const m=(lo+hi)/2;bs(S,K,T,r,q,m,type).price>mkt?hi=m:lo=m}return(lo+hi)/2}
 const fmt=(v,d=2)=>v==null||isNaN(v)||!isFinite(v)?'--':Number(v).toFixed(d);
 // 画布尺寸：基准高度只记录一次，避免每次重绘翻倍（v1 的显示异常就是这里）
-function setupCanvas(canvas){if(!canvas.dataset.h)canvas.dataset.h=canvas.clientHeight||180;const w=canvas.clientWidth||600,h=+canvas.dataset.h;canvas.width=w*2;canvas.height=h*2;const ctx=canvas.getContext('2d');return{ctx,W:canvas.width,H:canvas.height}}
+function setupCanvas(canvas){if(!canvas.dataset.h)canvas.dataset.h=canvas.clientHeight||180;const w=canvas.clientWidth||600,h=+canvas.dataset.h;canvas.width=w*2;canvas.height=h*2;canvas.style.width='100%';canvas.style.height=h+'px';const ctx=canvas.getContext('2d');return{ctx,W:canvas.width,H:canvas.height}}
 function drawLine(canvas,series,opts={}){const{ctx,W,H}=setupCanvas(canvas);ctx.clearRect(0,0,W,H);const all=series.flatMap(s=>s.data.map(p=>p.y));let mn=Math.min(...all),mx=Math.max(...all);if(opts.zero){mn=Math.min(mn,0);mx=Math.max(mx,0)}const pad=(mx-mn)*0.12||1;mn-=pad;mx+=pad;const xs=series[0].data.map(p=>p.x);const xmn=Math.min(...xs),xmx=Math.max(...xs);
  const L=56,R=16,Tp=16,B=34;const X=x=>L+(x-xmn)/(xmx-xmn)*(W-L-R),Y=y=>Tp+(mx-y)/(mx-mn)*(H-Tp-B);
  ctx.lineWidth=1;ctx.font='19px sans-serif';ctx.fillStyle='#94a3b8';
