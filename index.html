@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Options Lab · 期权实验室 — 084S</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="logo">◈</span> Options Lab <span class="sub">期权实验室</span></div>
+  <div class="top-right">
+    <span id="vixBadge" class="vix-badge">VIX --</span>
+    <span id="updatedAt" class="muted"></span>
+  </div>
+</header>
+<nav class="tabs">
+  <button class="tab active" data-tab="daily">📊 美股期权日报</button>
+  <button class="tab" data-tab="payoff">📈 Payoff Diagram</button>
+  <button class="tab" data-tab="bs">🧮 BS 计算器</button>
+</nav>
+<main>
+  <!-- 日报 -->
+  <section id="tab-daily" class="panel active">
+    <div class="grid-daily">
+      <aside class="card panic-card">
+        <h3>恐慌指数 VIX</h3>
+        <div class="vix-big" id="vixBig">--</div>
+        <div id="vixLevel" class="vix-level">加载中…</div>
+        <div class="gauge"><div id="gaugeFill" class="gauge-fill"></div><span class="g1">15</span><span class="g2">20</span><span class="g3">30</span><span class="g4">40</span></div>
+        <p class="hint">VIX &lt;15 平静 · 15–20 正常 · 20–30 焦虑 · 30–40 恐慌 · &gt;40 极端恐慌</p>
+        <canvas id="vixChart" height="140"></canvas>
+        <h4>SPY IV30 走势</h4>
+        <canvas id="ivChart" height="110"></canvas>
+        <div class="field"><label>历史日报</label><select id="reportSelect"></select></div>
+      </aside>
+      <article class="card report-card">
+        <div id="reportContent" class="report">正在加载日报…</div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Payoff -->
+  <section id="tab-payoff" class="panel">
+    <div class="presets">
+      <span class="muted">策略预设：</span>
+      <button data-preset="longCall">买入Call</button><button data-preset="longPut">买入Put</button>
+      <button data-preset="bullCall">牛市Call价差</button><button data-preset="bearPut">熊市Put价差</button>
+      <button data-preset="straddle">跨式</button><button data-preset="strangle">宽跨式</button>
+      <button data-preset="ironCondor">铁鹰</button><button data-preset="coveredCall">备兑Call</button>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>组合腿 Legs</h3>
+        <div id="legs"></div>
+        <button id="addLeg" class="btn">+ 添加一腿</button>
+        <hr>
+        <div class="field"><label>标的现价 S <span id="spotVal"></span></label><input type="range" id="spotRange" min="10" max="1000" step="1" value="100"><input type="number" id="spotInput" value="100" step="1"></div>
+        <div class="field"><label>距到期（天）· 用于理论曲线</label><input type="number" id="payoffDays" value="30" min="0" max="365"></div>
+        <div class="field"><label>隐含波动率 IV % · 用于理论曲线</label><input type="number" id="payoffIv" value="20" min="1" max="200" step="1"></div>
+        <div class="field"><label>无风险利率 %</label><input type="number" id="payoffRate" value="4" step="0.1"></div>
+        <div class="stats" id="payoffStats"></div>
+      </div>
+      <div class="card">
+        <h3>到期盈亏图</h3>
+        <canvas id="payoffChart" height="380"></canvas>
+        <p class="hint">实线 = 到期 P&amp;L · 虚线 = 当前（BS理论）P&amp;L · 绿盈红亏 · 竖线 = 现价</p>
+        <div id="payoffHover" class="hover-box">把鼠标移到图上查看任意价位盈亏</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BS -->
+  <section id="tab-bs" class="panel">
+    <div class="grid-2">
+      <div class="card">
+        <h3>Black-Scholes 参数</h3>
+        <div class="field"><label>类型</label><select id="bsType"><option value="call">Call 看涨</option><option value="put">Put 看跌</option></select></div>
+        <div class="field"><label>标的价格 S <span id="bsSVal"></span></label><input type="range" id="bsS" min="10" max="1000" step="1" value="100"><input type="number" id="bsSNum" value="100"></div>
+        <div class="field"><label>行权价 K <span id="bsKVal"></span></label><input type="range" id="bsK" min="10" max="1000" step="1" value="100"><input type="number" id="bsKNum" value="100"></div>
+        <div class="field"><label>到期天数 <span id="bsTVal"></span></label><input type="range" id="bsDays" min="1" max="730" step="1" value="30"><input type="number" id="bsDaysNum" value="30"></div>
+        <div class="field"><label>波动率 σ % <span id="bsVVal"></span></label><input type="range" id="bsVol" min="1" max="150" step="0.5" value="20"><input type="number" id="bsVolNum" value="20"></div>
+        <div class="field"><label>无风险利率 r %</label><input type="number" id="bsR" value="4" step="0.1"></div>
+        <div class="field"><label>股息率 q %</label><input type="number" id="bsQ" value="0" step="0.1"></div>
+        <hr>
+        <h4>由市价反推 IV</h4>
+        <div class="field"><label>市场价格</label><input type="number" id="bsMkt" placeholder="输入期权市价" step="0.01"><button id="bsIvBtn" class="btn small">反推 IV</button></div>
+        <div id="bsIvOut" class="hint"></div>
+      </div>
+      <div class="card">
+        <h3>定价与 Greeks</h3>
+        <div class="price-big" id="bsPrice">--</div>
+        <table class="greeks"><tbody id="bsGreeks"></tbody></table>
+        <canvas id="bsChart" height="200"></canvas>
+        <p class="hint">曲线：期权理论价值随标的价格变化（其余参数不变）</p>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>Options Lab · 数据：美股期权日报（SPY/QQQ/IWM/DIA 期权链 IV30）+ CBOE VIX · 每日北京时间 21:00 更新 · 仅供研究，不构成投资建议</footer>
+<script src="app.js"></script>
+</body>
+</html>
