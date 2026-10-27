@@ -43,11 +43,27 @@
   <!-- Payoff -->
   <section id="tab-payoff" class="panel">
     <div class="presets">
-      <span class="muted">策略预设：</span>
-      <button data-preset="longCall">买入Call</button><button data-preset="longPut">买入Put</button>
-      <button data-preset="bullCall">牛市Call价差</button><button data-preset="bearPut">熊市Put价差</button>
-      <button data-preset="straddle">跨式</button><button data-preset="strangle">宽跨式</button>
-      <button data-preset="ironCondor">铁鹰</button><button data-preset="coveredCall">备兑Call</button>
+      <span class="muted">单腿：</span>
+      <button data-preset="longCall">买入Call</button><button data-preset="shortCall">卖出Call</button>
+      <button data-preset="longPut">买入Put</button><button data-preset="shortPut">卖出Put</button>
+    </div>
+    <div class="presets">
+      <span class="muted">牛市：</span>
+      <button data-preset="bullCall">牛市Call价差</button><button data-preset="bullPut">牛市Put价差（卖Put价差）</button>
+      <span class="muted">熊市：</span>
+      <button data-preset="bearPut">熊市Put价差</button><button data-preset="bearCall">熊市Call价差（卖Call价差）</button>
+    </div>
+    <div class="presets">
+      <span class="muted">波动：</span>
+      <button data-preset="longStraddle">买入跨式 Straddle</button><button data-preset="shortStraddle">卖出跨式</button>
+      <button data-preset="longStrangle">买入宽跨式 Strangle</button><button data-preset="shortStrangle">卖出宽跨式</button>
+    </div>
+    <div class="presets">
+      <span class="muted">中性/蝶式：</span>
+      <button data-preset="callFly">Call蝶式 Fly</button><button data-preset="putFly">Put蝶式 Fly</button>
+      <button data-preset="ironFly">铁蝶 Iron Fly</button><button data-preset="ironCondor">铁鹰 Iron Condor</button>
+      <span class="muted">持股：</span>
+      <button data-preset="coveredCall">备兑 Covered Call</button><button data-preset="protectivePut">保护性Put</button><button data-preset="collar">领口 Collar</button>
     </div>
     <div class="grid-2">
       <div class="card">
